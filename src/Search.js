@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import { Redirect } from 'react-router';
 import * as BooksAPI from './utils/BooksAPI';
 import back from './icons/back.svg';
 import clear from './icons/clear-query.svg';
@@ -8,7 +9,9 @@ import noImage from './icons/no-img.svg';
 class Search extends Component {
 	state = {
 		query: '',
-		searchResult: []
+		searchResult: [],
+		newShelf: '',
+		redirect: false
 	};
 
 	updateQuery = (query) => {
@@ -33,8 +36,19 @@ class Search extends Component {
 		});
 	};
 
+	changeShelf = (shelf, book) => {
+		BooksAPI.update(book, shelf).then(()=>{
+			window.location.reload();
+			this.setState({ redirect: true });
+		})
+	};
+
 	render() {
-		const {query, searchResult} = this.state;
+		const {query, searchResult, newShelf, redirect} = this.state;
+
+		if (redirect) {
+			return <Redirect to='/' />;
+		}
 
 		return (
 			<div>
@@ -67,6 +81,19 @@ class Search extends Component {
 								<div className='book-top'>
 									{book.imageLinks && <img src={book.imageLinks.thumbnail} alt={book.title} className='book-images'/>}
 									{!book.imageLinks && <img src={noImage} alt={book.title} className='book-images' />}
+									<div className='select-btn'>
+										<select
+											value={newShelf}
+											onChange={(event) => {
+												this.changeShelf(event.target.value, book);
+											}}>
+											<option value='none'></option>
+											<option value='currentlyReading'>Currently Reading</option>
+											<option value='wantToRead'>Want to Read</option>
+											<option value='read'>Read</option>
+											<option value='none'>None</option>
+										</select>
+									</div>
 								</div>
 								<div className='book-info'>
 									<h5 className='text-center mt-3'>{book.title}</h5>

@@ -14,12 +14,9 @@ class ListBooks extends Component {
 	}
 
 	changeShelf = (shelf, book) => {
-		BooksAPI.update(book, shelf).then((books)=>{
-			console.log(books);
-		});
-		// if (shelf !== book.shelf) {
-			
-		// }
+		BooksAPI.update(book, shelf).then(()=>{
+			window.location.reload();
+		})
 	}
 
 	render() {
@@ -68,6 +65,19 @@ class ListBooks extends Component {
 						<div key={book.id} className='col'>
 							<div className='book-top'>
 								<img src={book.imageLinks.thumbnail} alt={book.title} className='book-images'/>
+								<div className='select-btn'>
+									<select
+										value={newShelf}
+										onChange={(event) => {
+											this.changeShelf(event.target.value, book);
+										}}>
+										<option value='none'></option>
+										<option value='currentlyReading'>Currently Reading</option>
+										<option value='wantToRead'>Want to Read</option>
+										<option value='read'>Read</option>
+										<option value='none'>None</option>
+									</select>
+								</div>
 							</div>
 							<div className='book-info'>
 								<h5 className='text-center mt-3'>{book.title}</h5>
@@ -87,6 +97,19 @@ class ListBooks extends Component {
 						<div key={book.id} className='col'>
 							<div className='book-top'>
 								<img src={book.imageLinks.thumbnail} alt={book.title} className='book-images'/>
+								<div className='select-btn'>
+									<select
+										value={newShelf}
+										onChange={(event) => {
+											this.changeShelf(event.target.value, book);
+										}}>
+										<option value='none'></option>
+										<option value='currentlyReading'>Currently Reading</option>
+										<option value='wantToRead'>Want to Read</option>
+										<option value='read'>Read</option>
+										<option value='none'>None</option>
+									</select>
+								</div>
 							</div>
 							<div className='book-info'>
 								<h5 className='text-center mt-3'>{book.title}</h5>
