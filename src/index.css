@@ -1,0 +1,101 @@
+body {
+	font-family: 'Titillium Web', sans-serif;
+}
+
+.card-header, .card-footer {
+	background-color: #BFE082;
+}
+
+.logo {
+	width: 50px;
+}
+
+.jumbotron {
+	background-color: transparent;
+}
+
+.author-names {
+	display: block;
+}
+
+.book-top {
+	width: 130px;
+	margin: 0 auto;
+}
+
+.book-info {
+	position: relative;
+	bottom: 30px;
+}
+
+#search {
+	border: none;
+	border-radius: 50%;
+	background-color: #BFE082;
+	opacity: 0.6;
+	position: fixed;
+	bottom: 120px;
+	right: 80px;
+}
+
+#search:hover {
+	opacity: 1;
+}
+
+#search-bar {
+	width: 100%;
+}
+
+#input {
+	border: none;
+	width: 100%;
+}
+
+#arrow {
+	opacity: 0.6;
+	float: left;
+}
+
+#arrow:hover {
+	opacity: 1;
+}
+
+.clear-btn {
+	border: none;
+	background-color: transparent;
+	float: right;
+}
+
+#clear {
+	opacity: 0.6;
+}
+
+#clear:hover {
+	opacity: 1;
+}
+
+.carets {
+	width: 33px;
+}
+
+.caret-boxes:hover {
+	opacity: 1;
+}
+
+.select-btn {
+	opacity: 0.8;
+	position: relative;
+	left: 110px;
+	bottom: 20px;
+}
+
+.select-btn:hover {
+	opacity: 1;
+}
+
+select {
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+	background-color: #BFE082;
+}
