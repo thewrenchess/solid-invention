@@ -34,6 +34,9 @@ class App extends Component {
         }
         this.setState({ books: temp });
         BooksAPI.update(book,shelf).then();
+        if (pos < 0) {
+            window.location.reload();
+        }
     };
 
   	render() {
