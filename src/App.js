@@ -19,14 +19,19 @@ class App extends Component {
 
 	componentDidMount() {
 		BooksAPI.getAll().then((books) => {
+            console.log(books);
 			this.setState({ books });
 		});
 	};
 
     changeShelf = (shelf, book) => {
-        BooksAPI.update(book, shelf).then(()=>{
-            window.location.reload();
-        });
+        let temp = this.state.books;
+        let pos = temp.indexOf(book);
+        pos >= 0
+            ? temp[pos].shelf = shelf
+            : (book.shelf = shelf && temp.push(book));
+        this.setState({ books: temp });
+        BooksAPI.update(book,shelf).then();
     };
 
   	render() {

@@ -33,7 +33,7 @@ class ListBooks extends Component {
 						</div>
 						<div className='book-info'>
 							<h5 className='text-center mt-3'>{book.title}</h5>
-							{book.authors.map((author, index) => (
+							{book.authors && book.authors.map((author, index) => (
 								<small key={index} className='author-names text-muted text-center'>{author}</small>
 							))}
 						</div>
