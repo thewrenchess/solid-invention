@@ -19,7 +19,6 @@ class App extends Component {
 
 	componentDidMount() {
 		BooksAPI.getAll().then((books) => {
-            console.log(books);
 			this.setState({ books });
 		});
 	};
@@ -27,9 +26,12 @@ class App extends Component {
     changeShelf = (shelf, book) => {
         let temp = this.state.books;
         let pos = temp.indexOf(book);
-        pos >= 0
-            ? temp[pos].shelf = shelf
-            : (book.shelf = shelf && temp.push(book));
+        if (pos < 0) {
+            book.shelf = shelf;
+            temp.push(book);
+        } else {
+            temp[pos].shelf = shelf;
+        }
         this.setState({ books: temp });
         BooksAPI.update(book,shelf).then();
     };
