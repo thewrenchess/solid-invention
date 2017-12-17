@@ -1,54 +1,53 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { Redirect } from 'react-router';
+import PropTypes from 'prop-types';
 import * as BooksAPI from './utils/BooksAPI';
 import back from './icons/back.svg';
 import clear from './icons/clear-query.svg';
 import noImage from './icons/no-img.svg';
 
 class Search extends Component {
+	static propTypes = {
+		currentBooks: PropTypes.array.isRequired,
+		onChangeShelf: PropTypes.func.isRequired,
+		shelves: PropTypes.array.isRequired
+	};
+
 	state = {
 		query: '',
 		searchResult: [],
-		newShelf: '',
-		redirect: false
 	};
 
 	updateQuery = (query) => {
 		this.setState({ query: query.trim() });
-		if (query) {
-			this.searchQuery(query);
-		} else {
-			this.setState({ searchResult: [] });
-		}
+		query
+			? this.searchQuery(query)
+			: this.setState({ searchResult: [] });
 	};
 
 	clearQuery = () => {
 		this.setState({ query: '' });
 		this.setState({ searchResult: [] });
-	}
+	};
 
 	searchQuery = (query) => {
 		BooksAPI.search(query, 20).then((books) => {
-			if (books) {
-				this.setState({ searchResult: books });
-			}
-		});
-	};
-
-	changeShelf = (shelf, book) => {
-		BooksAPI.update(book, shelf).then(()=>{
-			window.location.reload();
-			this.setState({ redirect: true });
+			books && this.setState({ searchResult:books });
 		})
 	};
 
-	render() {
-		const {query, searchResult, newShelf, redirect} = this.state;
-
-		if (redirect) {
-			return <Redirect to='/' />;
+	getShelf = (book) => {
+		for (let cBook of this.props.currentBooks) {
+			if (cBook.id === book.id) {
+				return cBook.shelf;
+			}
 		}
+		return 'none';
+	};
+
+	render() {
+		const { onChangeShelf, shelves } = this.props;
+		const { query, searchResult } = this.state;
 
 		return (
 			<div>
@@ -83,15 +82,15 @@ class Search extends Component {
 									{!book.imageLinks && <img src={noImage} alt={book.title} className='book-images' />}
 									<div className='select-btn'>
 										<select
-											value={newShelf}
 											onChange={(event) => {
-												this.changeShelf(event.target.value, book);
+												onChangeShelf(event.target.value, book);
 											}}>
-											<option value='none'></option>
-											<option value='currentlyReading'>Currently Reading</option>
-											<option value='wantToRead'>Want to Read</option>
-											<option value='read'>Read</option>
-											<option value='none'>None</option>
+											<option value=''></option>
+											{shelves.map((shelf)=>(
+												shelf.key === this.getShelf(book)
+													? <option key={shelf.key} value={shelf.key} disabled>*{shelf.value}</option>
+													: <option key={shelf.key} value={shelf.key}>{shelf.value}</option>
+											))}
 										</select>
 									</div>
 								</div>
