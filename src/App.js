@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
-import { Route, Link } from 'react-router-dom';
-import ListBooks from './ListBooks';
+import { Route } from 'react-router-dom';
+import Main from './Main';
 import Search from './Search';
 import * as BooksAPI from './utils/BooksAPI';
 import logo from './icons/i-read-icon.svg';
-import search from './icons/search.svg';
 
 class App extends Component {
 	state = {
@@ -31,12 +30,11 @@ class App extends Component {
             temp.push(book);
         } else {
             temp[pos].shelf = shelf;
+            this.setState({ books: temp });
         }
-        this.setState({ books: temp });
-        BooksAPI.update(book,shelf).then();
-        if (pos < 0) {
-            window.location.reload();
-        }
+        BooksAPI.update(book,shelf).then(() => {
+            pos < 0 && window.location.reload();
+        });
     };
 
   	render() {
@@ -52,29 +50,11 @@ class App extends Component {
       			</div>
       			<div className='card-body'>
       				<Route exact path='/' render={() => (
-                        <div className='jumbotron'>
-                            <h3>Currently Reading</h3>
-          					<ListBooks
-          						books = {books.filter((book)=>(book.shelf === 'currentlyReading'))}
-                                onChangeShelf = {this.changeShelf}
-                                shelves = {shelves}
-          					/>
-                            <hr/>
-                            <h3>Want To Read</h3>
-                            <ListBooks
-                                books = {books.filter((book)=>(book.shelf === 'wantToRead'))}
-                                onChangeShelf = {this.changeShelf}
-                                shelves = {shelves}
-                            />
-                            <hr/>
-                            <h3>Read</h3>
-                            <ListBooks
-                                books = {books.filter((book)=>(book.shelf === 'read'))}
-                                onChangeShelf = {this.changeShelf}
-                                shelves = {shelves}
-                            />
-                            <button id='search'><Link to='/search'><img src={search} alt='search icon' /></Link></button>
-                        </div>
+                        <Main
+                            books = {books}
+                            onChangeShelf = {this.changeShelf}
+                            shelves = {shelves}
+                        />
       				)}/>
               <Route path='/search' render={() => (
                 <Search
