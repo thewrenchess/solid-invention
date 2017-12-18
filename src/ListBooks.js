@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import noImage from './icons/no-img.svg';
 
 class ListBooks extends Component {
 	static propTypes = {
@@ -16,7 +17,8 @@ class ListBooks extends Component {
 				{books.map((book) => (
 					<div key={book.id} className='col'>
 						<div className='book-top'>
-							<img src={book.imageLinks.thumbnail} alt={book.title} className='book-images'/>
+							{book.imageLinks && <img src={book.imageLinks.thumbnail} alt={book.title} className='book-images'/>}
+							{!book.imageLinks && <img src={noImage} alt={book.title} className='book-images' />}
 							<div className='select-btn'>
 								<select
 									onChange={(event) => {
